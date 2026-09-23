@@ -1,0 +1,10 @@
+{
+  "products": [
+    { "id": "apple", "title": "Яблоко", "expiryDate": "7 дней", "happinessBoost": 5, "satietyBoost": 15, "quantities": [1, 5, 10], "prices": [10, 45, 80] },
+    { "id": "sandwich", "title": "Бутерброд", "expiryDate": "2 дня", "happinessBoost": 8, "satietyBoost": 25, "quantities": [1, 5, 10], "prices": [18, 80, 150] },
+    { "id": "milk", "title": "Молоко", "expiryDate": "5 дней", "happinessBoost": 3, "satietyBoost": 10, "quantities": [1, 5, 10], "prices": [8, 35, 60] },
+    { "id": "cookie", "title": "Печенье", "expiryDate": "30 дней", "happinessBoost": 15, "satietyBoost": 8, "quantities": [1, 5, 10], "prices": [12, 55, 100] },
+    { "id": "salad", "title": "Салат", "expiryDate": "3 дня", "happinessBoost": 4, "satietyBoost": 20, "quantities": [1, 5, 10], "prices": [15, 65, 120] },
+    { "id": "juice", "title": "Сок", "expiryDate": "14 дней", "happinessBoost": 10, "satietyBoost": 12, "quantities": [1, 5, 10], "prices": [14, 60, 110] }
+  ]
+}

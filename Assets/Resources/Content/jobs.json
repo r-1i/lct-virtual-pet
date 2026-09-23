@@ -1,0 +1,12 @@
+{
+  "jobs": [
+    { "id": "water_plants", "title": "Полить растения", "level": 1, "durationSeconds": 3, "reward": 40, "iconKey": "job_water_plants" },
+    { "id": "help_library", "title": "Помочь в библиотеке", "level": 1, "durationSeconds": 10800, "reward": 60, "iconKey": "job_library" },
+    { "id": "tidy_up", "title": "Навести порядок", "level": 1, "durationSeconds": 14400, "reward": 80, "iconKey": "job_tidy_up" },
+    { "id": "garden_care", "title": "Ухаживать за садом", "level": 1, "durationSeconds": 18000, "reward": 100, "iconKey": "job_garden" },
+    { "id": "workshop_helper", "title": "Помощник в мастерской", "level": 1, "durationSeconds": 28800, "reward": 160, "iconKey": "job_workshop" },
+
+    { "id": "bake_bread", "title": "Испечь хлеб", "level": 2, "durationSeconds": 10800, "reward": 90, "iconKey": "job_bakery" },
+    { "id": "deliver_mail", "title": "Разнести почту", "level": 2, "durationSeconds": 14400, "reward": 120, "iconKey": "job_mail" }
+  ]
+}
