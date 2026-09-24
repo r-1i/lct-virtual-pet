@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
+using Core;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 namespace Home
 {
@@ -69,11 +67,9 @@ namespace Home
             return false;
         }
 
-        private static readonly List<RaycastResult> UiRaycastBuffer = new List<RaycastResult>();
-
         private bool HitThisObject(Vector2 screenPosition)
         {
-            if (IsPointerOverUi(screenPosition))
+            if (PointerUtils.IsPointerOverUi(screenPosition))
             {
                 return false;
             }
@@ -86,34 +82,6 @@ namespace Home
             Ray ray = raycastCamera.ScreenPointToRay(screenPosition);
             return Physics.Raycast(ray, out RaycastHit hit, raycastMaxDistance, raycastMask)
                    && hit.transform.IsChildOf(transform);
-        }
-
-        /// <summary>
-        /// EventSystem.IsPointerOverGameObject() returns true for ANY raycaster hit under the
-        /// pointer, including PhysicsRaycaster hits on 3D world objects (like this boombox itself) —
-        /// not just UI. That made this check block its own clicks once a PhysicsRaycaster was added
-        /// to the camera for the shop. This filters specifically for GraphicRaycaster (actual UI) hits.
-        /// </summary>
-        private static bool IsPointerOverUi(Vector2 screenPosition)
-        {
-            if (EventSystem.current == null)
-            {
-                return false;
-            }
-
-            var pointerData = new PointerEventData(EventSystem.current) { position = screenPosition };
-            UiRaycastBuffer.Clear();
-            EventSystem.current.RaycastAll(pointerData, UiRaycastBuffer);
-
-            foreach (RaycastResult result in UiRaycastBuffer)
-            {
-                if (result.module is GraphicRaycaster)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public void Toggle()
