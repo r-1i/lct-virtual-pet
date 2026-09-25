@@ -64,6 +64,7 @@ namespace Work
             if (_jobService.TryCollect(out int reward))
             {
                 Debug.Log($"Work: collected {reward} coins.");
+                ServiceLocator.Get<TutorialService>().TryShow(TutorialStepIds.FirstMoney);
             }
         }
     }

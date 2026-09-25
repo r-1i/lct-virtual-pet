@@ -48,5 +48,17 @@ namespace Core
         public CharacterStats stats = new CharacterStats();
         public JobRuntimeState job = new JobRuntimeState();
         public List<InventoryStack> inventory = new List<InventoryStack>();
+
+        /// <summary>False until the intro cutscene has been watched to the end — then it never plays again. False (not "isFirstLaunch = true") so a save without this field still reads as a first launch.</summary>
+        public bool firstLaunchCompleted;
+
+        /// <summary>Starter food (for the feeding tutorial) already handed out — see PlayerDataService.GiveStarterItems.</summary>
+        public bool starterItemsGiven;
+
+        /// <summary>Index into tutorial.json of the next tutorial popup to show. >= step count = tutorial finished.</summary>
+        public int tutorialStep;
+
+        /// <summary>TutorialHighlight keys that are pulsing right now (dismissed hint, target not clicked yet). Saved so a restart doesn't lose them.</summary>
+        public List<string> tutorialHighlights = new List<string>();
     }
 }

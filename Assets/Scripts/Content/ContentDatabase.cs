@@ -9,14 +9,17 @@ namespace Content
     {
         private const string JobsResourcePath = "Content/jobs";
         private const string ProductsResourcePath = "Content/products";
+        private const string TutorialResourcePath = "Content/tutorial";
 
         public IReadOnlyList<JobDefinition> Jobs { get; }
         public IReadOnlyList<ProductDefinition> Products { get; }
+        public IReadOnlyList<TutorialStepDefinition> TutorialSteps { get; }
 
         public ContentDatabase()
         {
             Jobs = LoadJobs();
             Products = LoadProducts();
+            TutorialSteps = LoadTutorialSteps();
         }
 
         public JobDefinition FindJob(string id) => Jobs.FirstOrDefault(j => j.id == id);
@@ -49,6 +52,19 @@ namespace Content
 
             ProductDefinitionList wrapper = JsonUtility.FromJson<ProductDefinitionList>(asset.text);
             return wrapper?.products?.ToList() ?? new List<ProductDefinition>();
+        }
+
+        private static List<TutorialStepDefinition> LoadTutorialSteps()
+        {
+            TextAsset asset = Resources.Load<TextAsset>(TutorialResourcePath);
+            if (asset == null)
+            {
+                Debug.LogError($"ContentDatabase: Resources/{TutorialResourcePath}.json not found.");
+                return new List<TutorialStepDefinition>();
+            }
+
+            TutorialStepDefinitionList wrapper = JsonUtility.FromJson<TutorialStepDefinitionList>(asset.text);
+            return wrapper?.steps?.ToList() ?? new List<TutorialStepDefinition>();
         }
     }
 }

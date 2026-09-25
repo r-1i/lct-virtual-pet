@@ -8,6 +8,10 @@ namespace Core
     /// <summary>The only place allowed to mutate PlayerData. Every method here saves immediately and publishes the matching EventBus event.</summary>
     public class PlayerDataService
     {
+        /// <summary>Food on the table for the tutorial's "нажми на еду" step — a fresh save has no coins to buy any.</summary>
+        private const string StarterProductId = "apple";
+        private const int StarterProductCount = 3;
+
         private readonly SaveService _saveService;
         private readonly PlayerData _data;
 
@@ -15,6 +19,19 @@ namespace Core
         {
             _saveService = saveService;
             _data = _saveService.Load();
+            GiveStarterItems();
+        }
+
+        /// <summary>Once per save. Runs in the constructor (inside Bootstrap.Awake), so the events it publishes have no listeners yet — everyone reads the state in Start anyway.</summary>
+        private void GiveStarterItems()
+        {
+            if (_data.starterItemsGiven)
+            {
+                return;
+            }
+
+            _data.starterItemsGiven = true;
+            AddInventory(StarterProductId, StarterProductCount);
         }
 
         public int Coins => _data.coins;
@@ -24,6 +41,9 @@ namespace Core
         /// <summary>Read-only snapshot. To change stats use ApplyStatDelta or SetStats — do not mutate the returned object's fields directly, it won't save or notify anyone.</summary>
         public CharacterStats Stats => _data.stats;
         public JobRuntimeState Job => _data.job;
+        public bool IsFirstLaunch => !_data.firstLaunchCompleted;
+        public int TutorialStep => _data.tutorialStep;
+        public bool HasTutorialHighlight(string key) => _data.tutorialHighlights.Contains(key);
 
         /// <summary>Total across every batch of this product — what the UI shows as "x10".</summary>
         public int GetInventoryCount(string productId)
@@ -162,6 +182,49 @@ namespace Core
             _data.job.durationSeconds = 0f;
             Save();
             EventBus.Publish(new JobStateChangedEvent(_data.job));
+        }
+
+        /// <summary>Called by IntroCutscene after its last slide, so quitting mid-cutscene replays it next launch.</summary>
+        public void CompleteFirstLaunch()
+        {
+            _data.firstLaunchCompleted = true;
+            Save();
+        }
+
+        /// <summary>Only TutorialService should call this.</summary>
+        public void SetTutorialStep(int step)
+        {
+            _data.tutorialStep = step;
+            Save();
+        }
+
+        /// <summary>Only TutorialService should call this.</summary>
+        public void AddTutorialHighlight(string key)
+        {
+            if (!_data.tutorialHighlights.Contains(key))
+            {
+                _data.tutorialHighlights.Add(key);
+                Save();
+            }
+        }
+
+        /// <summary>Only TutorialService should call this. Returns false if the key wasn't active.</summary>
+        public bool RemoveTutorialHighlight(string key)
+        {
+            if (!_data.tutorialHighlights.Remove(key))
+            {
+                return false;
+            }
+
+            Save();
+            return true;
+        }
+
+        /// <summary>Only TutorialService should call this.</summary>
+        public void ClearTutorialHighlights()
+        {
+            _data.tutorialHighlights.Clear();
+            Save();
         }
 
         private void SaveAndPublishCoins()

@@ -5,6 +5,13 @@
     { "id": "milk", "title": "Молоко", "expiryDate": "5 дней", "happinessBoost": 3, "satietyBoost": 10, "quantities": [1, 5, 10], "prices": [8, 35, 60] },
     { "id": "cookie", "title": "Печенье", "expiryDate": "30 дней", "happinessBoost": 15, "satietyBoost": 8, "quantities": [1, 5, 10], "prices": [12, 55, 100] },
     { "id": "salad", "title": "Салат", "expiryDate": "3 дня", "happinessBoost": 4, "satietyBoost": 20, "quantities": [1, 5, 10], "prices": [15, 65, 120] },
-    { "id": "juice", "title": "Сок", "expiryDate": "14 дней", "happinessBoost": 10, "satietyBoost": 12, "quantities": [1, 5, 10], "prices": [14, 60, 110] }
+    { "id": "juice", "title": "Сок", "expiryDate": "14 дней", "happinessBoost": 10, "satietyBoost": 12, "quantities": [1, 5, 10], "prices": [14, 60, 110] },
+
+    { "id": "toy", "title": "Игрушка", "instantUse": true, "happinessBoost": 20, "quantities": [1], "prices": [40] },
+    { "id": "balloon", "title": "Воздушный шарик", "instantUse": true, "happinessBoost": 10, "quantities": [1], "prices": [15] },
+    { "id": "comic", "title": "Комикс", "instantUse": true, "happinessBoost": 15, "quantities": [1], "prices": [25] },
+    { "id": "ice_cream", "title": "Мороженое", "instantUse": true, "happinessBoost": 12, "quantities": [1], "prices": [20] },
+    { "id": "sticker", "title": "Наклейки", "instantUse": true, "happinessBoost": 6, "quantities": [1], "prices": [8] },
+    { "id": "game", "title": "Видеоигра", "instantUse": true, "happinessBoost": 35, "quantities": [1], "prices": [90] }
   ]
 }

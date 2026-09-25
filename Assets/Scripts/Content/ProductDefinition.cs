@@ -16,6 +16,12 @@ namespace Content
         public float happinessBoost;
         public float satietyBoost;
 
+        /// <summary>
+        /// "Хочу" tab product: never goes to the inventory, buying it applies happinessBoost to mood
+        /// right away. Sold one at a time (quantities is just [1]) through WantProductPanel.
+        /// </summary>
+        public bool instantUse;
+
         /// <summary>Quantity options offered in the shop, e.g. [1, 5, 10].</summary>
         public int[] quantities;
 

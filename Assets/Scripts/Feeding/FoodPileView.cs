@@ -46,6 +46,7 @@ namespace Feeding
             // Happiness → Настроение, satiety → Сытость; health isn't affected by feeding (only care/hygiene raises it).
             _playerData.ApplyStatDelta(_product.satietyBoost, _product.happinessBoost, 0f);
             _character.PlayEat();
+            ServiceLocator.Get<TutorialService>().TryShow(TutorialStepIds.FedHappy);
             // FoodTableView rebuilds this whole pile (or removes it if it hit 0) on
             // InventoryChangedEvent, so this instance doesn't need to update itself further.
         }

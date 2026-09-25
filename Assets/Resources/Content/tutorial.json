@@ -1,0 +1,28 @@
+{
+  "steps": [
+    { "id": "welcome", "description": "Привет, Смотритель! Я смотрю, ты завёл себе нового друга?", "showNextImmediately": true },
+    { "id": "care_intro", "description": "Давай расскажу, как за ним ухаживать.", "showNextImmediately": true },
+    { "id": "needs", "description": "Питомец должен кушать, отдыхать и быть здоровым.", "showNextImmediately": true },
+    { "id": "lets_help", "description": "Похоже, за ним никто не следил. Давай ему поможем!", "showNextImmediately": true },
+    { "id": "press_feed", "description": "Сначала накормим его. Для этого нажми на кнопку «Покормить».", "highlight": "feed_button" },
+    { "id": "tap_food", "description": "Нажми на еду, чтобы накормить питомца." },
+
+    { "id": "fed_happy", "description": "Смотри, какой довольный!", "showNextImmediately": true },
+    { "id": "go_home", "description": "Давай вернёмся на главный экран.", "highlight": "home_button" },
+    { "id": "check_health", "description": "Теперь нужно проверить его здоровье, нажми на ту кнопку.", "highlight": "care_button" },
+    { "id": "go_shower", "description": "Давай сперва отмоем этого красавца. Для этого нажми на ванну.", "highlight": "bath" },
+    { "id": "soap", "description": "Намыль его с ног до головы." },
+    { "id": "rinse", "description": "А теперь смой всё водой." },
+
+    { "id": "press_sink", "description": "Нажми на раковину, чтобы почистить ему зубы.", "highlight": "sink" },
+    { "id": "brush_teeth", "description": "Теперь води по зубам, чтобы почистить их." },
+    { "id": "teeth_done", "description": "Блестяще!", "showNextImmediately": true },
+    { "id": "go_home_work", "description": "Теперь возвращайся в главную комнату.", "highlight": "home_button" },
+
+    { "id": "earn_money", "description": "Теперь нам надо заработать деньги на содержание питомца.", "showNextImmediately": true },
+    { "id": "press_work", "description": "Для этого нажми на кнопку «Работать».", "highlight": "work_button" },
+    { "id": "jobs_intro", "description": "На выбор у тебя есть несколько работ. Чем дольше работает питомец, тем больше денег получаешь.", "showNextImmediately": true },
+    { "id": "pick_job", "description": "Сейчас мы не будем ждать, так что выбери самую прибыльную работу.", "highlight": "collect_button" },
+    { "id": "first_money", "description": "Супер! Ты получил первые деньги." }
+  ]
+}

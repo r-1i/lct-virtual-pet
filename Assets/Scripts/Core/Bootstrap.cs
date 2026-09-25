@@ -16,12 +16,14 @@ namespace Core
             var saveService = new SaveService();
             _playerData = new PlayerDataService(saveService);
             var contentDatabase = new ContentDatabase();
-            var jobService = new JobService(_playerData, contentDatabase);
+            var tutorialService = new TutorialService(_playerData, contentDatabase);
+            var jobService = new JobService(_playerData, contentDatabase, tutorialService);
 
             ServiceLocator.Register(saveService);
             ServiceLocator.Register(_playerData);
             ServiceLocator.Register(contentDatabase);
             ServiceLocator.Register(jobService);
+            ServiceLocator.Register(tutorialService);
 
             // Writes save.json immediately, even on a brand-new save — otherwise the file only
             // appears after the first real mutation (buying something, starting a job, etc.).

@@ -9,11 +9,13 @@ namespace Core
     {
         private readonly PlayerDataService _playerData;
         private readonly ContentDatabase _content;
+        private readonly TutorialService _tutorial;
 
-        public JobService(PlayerDataService playerData, ContentDatabase content)
+        public JobService(PlayerDataService playerData, ContentDatabase content, TutorialService tutorial)
         {
             _playerData = playerData;
             _content = content;
+            _tutorial = tutorial;
         }
 
         public bool IsWorking => _playerData.Job.IsActive;
@@ -58,7 +60,10 @@ namespace Core
                 return false;
             }
 
-            _playerData.SetJob(jobId, definition.durationSeconds);
+            // Tutorial "сейчас мы не будем ждать": the job picked on that step is done instantly.
+            float duration = _tutorial.IsWaitingFor(TutorialStepIds.FirstMoney) ? 0f : definition.durationSeconds;
+
+            _playerData.SetJob(jobId, duration);
             error = null;
             return true;
         }

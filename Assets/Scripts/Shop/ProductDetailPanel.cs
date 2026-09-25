@@ -14,7 +14,7 @@ namespace Shop
     /// </summary>
     public class ProductDetailPanel : MonoBehaviour
     {
-        private const float CashbackRate = 0.1f;
+        public const float CashbackRate = 0.1f;
 
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private TMP_Text titleLabel;

@@ -157,6 +157,7 @@ namespace Care
             if (_bubbles.Count >= targetBubbleCount)
             {
                 _phase = Phase.Clearing;
+                ServiceLocator.Get<TutorialService>().TryShow(TutorialStepIds.Rinse);
             }
         }
 
