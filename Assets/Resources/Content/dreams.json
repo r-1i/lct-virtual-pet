@@ -1,0 +1,7 @@
+{
+  "dreams": [
+    { "id": "house", "title": "Дом", "description": "Уютный дом для черепашки", "price": 500, "iconKey": "dream_house" },
+    { "id": "swing", "title": "Качели", "description": "Качели, чтобы черепашка весело качалась", "price": 800, "iconKey": "dream_swing" },
+    { "id": "bridge", "title": "Мостик", "description": "Мостик через пруд в заповеднике", "price": 1200, "iconKey": "dream_bridge" }
+  ]
+}

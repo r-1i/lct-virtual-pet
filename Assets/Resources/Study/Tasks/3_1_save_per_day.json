@@ -1,0 +1,29 @@
+{
+  "id": "save_per_day",
+  "theme": "save_no_scam",
+  "order": 1,
+  "type": "distribute",
+  "title": "Сколько откладывать",
+  "header": "Задание: копилка",
+  "speaker": "badger",
+  "speakerName": "Барсук",
+  "speech": "На мечту нужно 100 монет за 5 дней. Сколько прятать в копилку каждый день?",
+  "budget": 0,
+  "rows": [
+    { "id": "perDay", "title": "В копилку в день", "subtitle": "цель — 100 монет за 5 дней", "iconKey": "jar", "start": 0, "min": 20, "max": 100,
+      "belowMinText": "{perDay} в день × 5 дней = {total}. До 100 не хватит {short}." }
+  ],
+  "goal": {
+    "row": "perDay",
+    "target": 100,
+    "days": 5,
+    "reachText": "Успеешь: {value} × {days} = {total} монет.",
+    "missText": "Не успеешь: {value} × {days} = {total}, не хватит {short}."
+  },
+  "outcomes": [
+    { "row": "perDay", "atLeast": 21, "text": "Ты откладываешь с запасом — успеешь даже раньше срока." }
+  ],
+  "passExplanation": "100 ÷ 5 = 20 — это дневная норма. Если откладывать хотя бы по 20 каждый день, к пятому дню мечта будет твоей.",
+  "failExplanation": "Раздели цель на дни: 100 ÷ 5 = 20. Меньше 20 в день — к сроку не успеешь.",
+  "lesson": "Дели цель на дни — вот дневная норма."
+}

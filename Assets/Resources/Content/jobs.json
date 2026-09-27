@@ -7,6 +7,18 @@
     { "id": "workshop_helper", "title": "Помощник в мастерской", "level": 1, "durationSeconds": 28800, "reward": 160, "iconKey": "job_workshop" },
 
     { "id": "bake_bread", "title": "Испечь хлеб", "level": 2, "durationSeconds": 10800, "reward": 90, "iconKey": "job_bakery" },
-    { "id": "deliver_mail", "title": "Разнести почту", "level": 2, "durationSeconds": 14400, "reward": 120, "iconKey": "job_mail" }
+    { "id": "deliver_mail", "title": "Разнести почту", "level": 2, "durationSeconds": 14400, "reward": 120, "iconKey": "job_mail" },
+    { "id": "build_birdhouse", "title": "Смастерить скворечник", "level": 2, "durationSeconds": 18000, "reward": 150, "iconKey": "job_birdhouse" },
+    { "id": "guard_warehouse", "title": "Сторожить склад", "level": 2, "durationSeconds": 28800, "reward": 240, "iconKey": "job_warehouse" },
+
+    { "id": "sell_at_market", "title": "Торговать на рынке", "level": 3, "durationSeconds": 10800, "reward": 120, "iconKey": "job_market" },
+    { "id": "fix_bikes", "title": "Чинить велосипеды", "level": 3, "durationSeconds": 14400, "reward": 160, "iconKey": "job_bikes" },
+    { "id": "teach_kids", "title": "Помогать малышам с уроками", "level": 3, "durationSeconds": 18000, "reward": 200, "iconKey": "job_teach" },
+    { "id": "shop_assistant", "title": "Консультант в магазине", "level": 3, "durationSeconds": 28800, "reward": 320, "iconKey": "job_shop" },
+
+    { "id": "run_cafe", "title": "Управлять кафе", "level": 4, "durationSeconds": 10800, "reward": 180, "iconKey": "job_cafe" },
+    { "id": "organize_fair", "title": "Организовать ярмарку", "level": 4, "durationSeconds": 14400, "reward": 240, "iconKey": "job_fair" },
+    { "id": "lead_team", "title": "Руководить бригадой", "level": 4, "durationSeconds": 18000, "reward": 300, "iconKey": "job_team" },
+    { "id": "plan_budget", "title": "Составлять бюджет города", "level": 4, "durationSeconds": 28800, "reward": 480, "iconKey": "job_budget" }
   ]
 }

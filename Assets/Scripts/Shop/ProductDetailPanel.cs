@@ -142,6 +142,8 @@ namespace Shop
             int cashback = Mathf.RoundToInt(price * CashbackRate);
             _playerData.AddJarCoins(cashback);
             _playerData.AddInventory(_product.id, quantity);
+            _playerData.LogMoney(MoneyKind.BuyNeed, price, _product.title, quantity);
+            _playerData.LogMoney(MoneyKind.Cashback, cashback, _product.title);
 
             Debug.Log($"Shop: bought {quantity}x {_product.title} for {price} (+{cashback} cashback).");
 

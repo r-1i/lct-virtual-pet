@@ -1,0 +1,8 @@
+{
+  "careerTitles": ["Стажёр", "Младший", "Специалист", "Руководитель"],
+  "themes": [
+    { "id": "salary", "title": "Распорядись зарплатой", "order": 1, "unlockShifts": 3, "rewardLevel": 2 },
+    { "id": "smart_buyer", "title": "Умный покупатель", "order": 2, "unlockShifts": 6, "rewardLevel": 3 },
+    { "id": "save_no_scam", "title": "Копи и не ведись", "order": 3, "unlockShifts": 9, "rewardLevel": 4 }
+  ]
+}

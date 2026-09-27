@@ -6,7 +6,11 @@ namespace Core
     /// <summary>Creates and registers every core service. Put this on one GameObject in the scene (name it "Bootstrap"). Other scripts must fetch services in Start(), not Awake() — Unity runs every object's Awake before any Start, so Start is always safe regardless of hierarchy order.</summary>
     public class Bootstrap : MonoBehaviour
     {
+        /// <summary>How often to check whether a real calendar day ended while the game is open (finishes the finance plan).</summary>
+        private const float DayCheckInterval = 10f;
+
         private PlayerDataService _playerData;
+        private FinanceService _financeService;
 
         private void Awake()
         {
@@ -18,12 +22,18 @@ namespace Core
             var contentDatabase = new ContentDatabase();
             var tutorialService = new TutorialService(_playerData, contentDatabase);
             var jobService = new JobService(_playerData, contentDatabase, tutorialService);
+            var dreamService = new DreamService(_playerData, contentDatabase);
+            _financeService = new FinanceService(_playerData, contentDatabase);
+            var studyService = new StudyService(_playerData, contentDatabase);
 
             ServiceLocator.Register(saveService);
             ServiceLocator.Register(_playerData);
             ServiceLocator.Register(contentDatabase);
             ServiceLocator.Register(jobService);
             ServiceLocator.Register(tutorialService);
+            ServiceLocator.Register(dreamService);
+            ServiceLocator.Register(_financeService);
+            ServiceLocator.Register(studyService);
 
             // Writes save.json immediately, even on a brand-new save — otherwise the file only
             // appears after the first real mutation (buying something, starting a job, etc.).
@@ -33,12 +43,27 @@ namespace Core
                       $"content ({contentDatabase.Jobs.Count} jobs, {contentDatabase.Products.Count} products).");
         }
 
+        private void Start()
+        {
+            InvokeRepeating(nameof(CheckDay), DayCheckInterval, DayCheckInterval);
+        }
+
+        private void CheckDay()
+        {
+            _financeService?.CheckPeriod();
+        }
+
         // Safety net for mobile: the OS can kill the app right after it's backgrounded, with no OnApplicationQuit.
+        // Coming back can also be the next day — check the finance plan right away.
         private void OnApplicationPause(bool pauseStatus)
         {
             if (pauseStatus)
             {
                 _playerData?.Save();
+            }
+            else
+            {
+                CheckDay();
             }
         }
     }

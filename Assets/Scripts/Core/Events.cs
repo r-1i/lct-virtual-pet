@@ -59,6 +59,27 @@ namespace Core
         }
     }
 
+    /// <summary>Published by PlayerDataService when the current dream changes (picked, or the previous one bought) or the planned saving per day changes (the forecast depends on it). Empty id = every dream is bought.</summary>
+    public readonly struct DreamChangedEvent
+    {
+        public readonly string CurrentDreamId;
+
+        public DreamChangedEvent(string currentDreamId)
+        {
+            CurrentDreamId = currentDreamId;
+        }
+    }
+
+    /// <summary>Published by PlayerDataService when the finance plan, its last result, the Barsuk deposit or the money history changes.</summary>
+    public readonly struct FinanceChangedEvent
+    {
+    }
+
+    /// <summary>Published by PlayerDataService when shifts or passed study tasks change. Level-ups come separately as LevelChangedEvent.</summary>
+    public readonly struct StudyChangedEvent
+    {
+    }
+
     /// <summary>Published by ZoneManager after GoToZone finishes (camera always moves; the character only if it wasn't busy). Index matches ZoneManager's Zones array.</summary>
     public readonly struct ZoneChangedEvent
     {

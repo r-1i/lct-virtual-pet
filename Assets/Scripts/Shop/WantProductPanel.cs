@@ -108,6 +108,8 @@ namespace Shop
             int cashback = Mathf.RoundToInt(price * ProductDetailPanel.CashbackRate);
             _playerData.AddJarCoins(cashback);
             _playerData.ApplyStatDelta(0f, _product.happinessBoost, 0f);
+            _playerData.LogMoney(MoneyKind.BuyWant, price, _product.title, Quantity);
+            _playerData.LogMoney(MoneyKind.Cashback, cashback, _product.title);
 
             Debug.Log($"Shop: bought {_product.title} for {price} (+{cashback} cashback, +{_product.happinessBoost} mood).");
 

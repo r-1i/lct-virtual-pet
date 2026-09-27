@@ -83,9 +83,11 @@ namespace Core
             if (rewardCoins > 0)
             {
                 _playerData.AddCoins(rewardCoins);
+                _playerData.LogMoney(MoneyKind.JobIncome, rewardCoins, definition.title);
             }
 
             _playerData.ClearJob();
+            _playerData.AddShift();
             return true;
         }
     }

@@ -1,0 +1,8 @@
+{
+  "planRewardCoins": 5,
+  "maxPlanDays": 3,
+  "historyKeepDays": 30,
+  "depositMinAmount": 10,
+  "depositMaxDays": 3,
+  "depositRatePercentByDays": [3, 6, 10]
+}
