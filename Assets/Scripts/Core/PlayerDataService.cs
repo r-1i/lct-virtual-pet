@@ -73,6 +73,9 @@ namespace Core
         public int PlannedSavingPerDay => _data.plannedSavingPerDay;
         public int LastActiveDay => _data.lastActiveDay;
 
+        /// <summary>"Период N": 1 on the first day of the profile, +1 every calendar day (GameDay, follows the debug day shift).</summary>
+        public int Period => _data.firstDay > 0 ? Mathf.Max(1, GameDay.Today - _data.firstDay + 1) : 1;
+
         /// <summary>Read-only snapshots — change them only through the methods below (FinanceService does).</summary>
         public FinancePlan Plan => _data.plan;
         public PlanResult LastPlanResult => _data.lastPlanResult;
@@ -581,6 +584,18 @@ namespace Core
             _data.characterCreated = false;
             Persist();
             EventBus.Publish(new CharacterChangedEvent());
+        }
+
+        /// <summary>Bootstrap: a new profile (or a save from before periods) starts its Период 1 today.</summary>
+        public void StampFirstDay()
+        {
+            if (_data.firstDay > 0)
+            {
+                return;
+            }
+
+            _data.firstDay = GameDay.Today;
+            Persist();
         }
 
         /// <summary>Only MailService should call this.</summary>

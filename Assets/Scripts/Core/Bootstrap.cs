@@ -24,6 +24,7 @@ namespace Core
             _playerData.GiveStarterItems(contentDatabase.Economy.startCoins, contentDatabase.Economy.startStats);
             _playerData.RemoveUnknownInventory(id => contentDatabase.FindProduct(id) != null);
             _playerData.StampUndatedInventory();
+            _playerData.StampFirstDay();
             var dayService = new DayService(_playerData, contentDatabase);
             // Before FinanceService: a finished day must be snapshotted before the new day changes anything
             // (MailService snapshots it, then lets DayService run the night: cashback, spoiled food, stat decay).

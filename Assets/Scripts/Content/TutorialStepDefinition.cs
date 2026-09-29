@@ -17,6 +17,9 @@ namespace Content
 
         /// <summary>Optional. Show the next step right after this one is dismissed, for back-to-back hints.</summary>
         public bool showNextImmediately;
+
+        /// <summary>Optional. Name of the voice clip (Sounds/Tutorial, e.g. "t7") played while the popup is on screen — TutorialPopup finds it in its Voice Clips list. Empty = silent.</summary>
+        public string sound;
     }
 
     /// <summary>JsonUtility can't parse a bare top-level array, so tutorial.json is { "steps": [ ... ] }.</summary>

@@ -220,5 +220,8 @@ namespace Core
 
         /// <summary>GameDay this save was last played on. When today is later, that day is over — MailService snapshots the save and sends the letter. 0 = not set yet (old save).</summary>
         public int lastActiveDay;
+
+        /// <summary>GameDay of the first launch of this profile — "Период N" = days since it + 1. 0 = not stamped yet (old save), Bootstrap stamps today.</summary>
+        public int firstDay;
     }
 }

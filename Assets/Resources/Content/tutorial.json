@@ -1,28 +1,34 @@
 {
   "steps": [
-    { "id": "welcome", "description": "Привет, Смотритель! Я смотрю, ты завёл себе нового друга?", "showNextImmediately": true },
-    { "id": "care_intro", "description": "Давай расскажу, как за ним ухаживать.", "showNextImmediately": true },
-    { "id": "needs", "description": "Питомец должен кушать, отдыхать и быть здоровым.", "showNextImmediately": true },
-    { "id": "lets_help", "description": "Похоже, за ним никто не следил. Давай ему поможем!", "showNextImmediately": true },
-    { "id": "press_feed", "description": "Сначала накормим его. Для этого нажми на кнопку «Покормить».", "highlight": "feed_button" },
-    { "id": "tap_food", "description": "Нажми на еду, чтобы накормить питомца." },
+    { "id": "welcome", "description": "Привет, Смотритель! Я смотрю, ты завёл себе нового друга? Давай расскажу, как за ним ухаживать.", "showNextImmediately": true, "sound": "t1" },
+    { "id": "needs", "description": "Питомец должен кушать, отдыхать и быть здоровым.", "showNextImmediately": true, "sound": "t2" },
+    { "id": "lets_help", "description": "Похоже, за ним никто не следил. Давай ему поможем!", "showNextImmediately": true, "sound": "t3" },
+    { "id": "press_feed", "description": "Сначала накормим его. Для этого нажми на кнопку «Покормить».", "highlight": "feed_button", "sound": "t4" },
+    { "id": "tap_food", "description": "Нажми на еду, чтобы накормить питомца.", "sound": "t5"},
 
-    { "id": "fed_happy", "description": "Смотри, какой довольный!", "showNextImmediately": true },
+    { "id": "fed_happy", "description": "Смотри, какой довольный!", "showNextImmediately": true, "sound": "t6" },
     { "id": "go_home", "description": "Давай вернёмся на главный экран.", "highlight": "home_button" },
-    { "id": "check_health", "description": "Теперь нужно проверить его здоровье, нажми на ту кнопку.", "highlight": "care_button" },
-    { "id": "go_shower", "description": "Давай сперва отмоем этого красавца. Для этого нажми на ванну.", "highlight": "bath" },
-    { "id": "soap", "description": "Намыль его с ног до головы." },
-    { "id": "rinse", "description": "А теперь смой всё водой." },
+    { "id": "check_health", "description": "Теперь нужно проверить его здоровье, нажми на ту кнопку.", "highlight": "care_button", "sound": "t7" },
+    { "id": "go_shower", "description": "Давай сперва отмоем этого красавца. Для этого нажми на ванну.", "highlight": "bath", "sound": "t8" },
+    { "id": "soap", "description": "Намыль его с ног до головы.", "sound": "t9" },
+    { "id": "rinse", "description": "А теперь смой всё водой.", "sound": "t11" },
 
-    { "id": "press_sink", "description": "Нажми на раковину, чтобы почистить ему зубы.", "highlight": "sink" },
-    { "id": "brush_teeth", "description": "Теперь води по зубам, чтобы почистить их." },
-    { "id": "teeth_done", "description": "Блестяще!", "showNextImmediately": true },
-    { "id": "go_home_work", "description": "Теперь возвращайся в главную комнату.", "highlight": "home_button" },
+    { "id": "press_sink", "description": "Нажми на раковину, чтобы почистить ему зубы.", "highlight": "sink", "sound": "t12" },
+    { "id": "brush_teeth", "description": "Теперь води по зубам, чтобы почистить их.", "sound": "t13" },
+    { "id": "teeth_done", "description": "Блестяще!", "showNextImmediately": true, "sound": "t14" },
+    { "id": "go_home_work", "description": "Теперь возвращайся в главную комнату.", "highlight": "home_button", "sound": "t15" },
 
-    { "id": "earn_money", "description": "Теперь нам надо заработать деньги на содержание питомца.", "showNextImmediately": true },
-    { "id": "press_work", "description": "Для этого нажми на кнопку «Работать».", "highlight": "work_button" },
-    { "id": "jobs_intro", "description": "На выбор у тебя есть несколько работ. Чем дольше работает питомец, тем больше денег получаешь.", "showNextImmediately": true },
-    { "id": "pick_job", "description": "Сейчас мы не будем ждать, так что выбери самую прибыльную работу.", "highlight": "collect_button" },
-    { "id": "first_money", "description": "Супер! Ты получил первые деньги." }
+    { "id": "earn_money", "description": "Теперь нам надо заработать деньги на содержание питомца.", "showNextImmediately": true, "sound": "t15" },
+    { "id": "press_work", "description": "Для этого нажми на кнопку «Работать».", "highlight": "work_button", "sound": "t16" },
+    { "id": "jobs_intro", "description": "На выбор у тебя есть несколько работ. Чем дольше работает питомец, тем больше денег получаешь.", "showNextImmediately": true, "sound": "t17" },
+    { "id": "pick_job", "description": "Сейчас мы не будем ждать, так что выбери самую прибыльную работу.", "highlight": "collect_button", "sound": "t18" },
+    { "id": "first_money", "description": "Супер! Ты получил первые деньги.", "showNextImmediately": true, "sound": "t19" },
+
+    { "id": "plan_money", "description": "Теперь нам надо распланировать их до следующей зарплаты.", "showNextImmediately": true, "sound": "t20" },
+    { "id": "go_home_plan", "description": "Вернись домой.", "highlight": "home_button", "sound": "t21" },
+    { "id": "go_planning", "description": "Переходи в планирование финансов.", "highlight": "planning_button", "sound": "t22" },
+    { "id": "planning_intro", "description": "Тут ты можешь распланировать свои траты на день. Если план совпадёт с реальными тратами, будешь получать бонусные монеты.", "highlight": "home_button", "sound": "t23" },
+    { "id": "study_intro", "description": "А тут у нас тесты и задачи от начальника Бобра, за их выполнение питомцу повышают зарплату.", "showNextImmediately": true, "highlight": "study_button", "sound": "t24" },
+    { "id": "bye", "description": "Ладно, дальше сам разберёшься. До встречи!", "sound": "t25" }
   ]
 }

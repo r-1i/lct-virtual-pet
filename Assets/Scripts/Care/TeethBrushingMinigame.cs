@@ -36,6 +36,12 @@ namespace Care
         [Tooltip("Optional \"42%\" label.")]
         [SerializeField] private TMP_Text progressLabel;
 
+        [Header("Per character")]
+        [Tooltip("Image with clean teeth, under dirtyTeeth.")]
+        [SerializeField] private Image cleanTeeth;
+        [Tooltip("Clean / dirty teeth per model, same order as CharacterAppearance.models (0 axolotl, 1 bear, 2 turtle). An empty slot keeps the images as they are.")]
+        [SerializeField] private TeethSprites[] modelTeeth = new TeethSprites[0];
+
         [Header("Sound")]
         [Tooltip("Brushing sound, Loop = on, Play On Awake = off. Plays while the finger is down.")]
         [SerializeField] private AudioSource brushSound;
@@ -97,10 +103,31 @@ namespace Care
             if (open)
             {
                 _completed = false;
+                ApplyCharacterSprites();
                 SetProgress(0f);
             }
 
             panel.SetActive(open);
+        }
+
+        private void ApplyCharacterSprites()
+        {
+            int model = _playerData != null ? _playerData.CharacterModel : 0;
+            if (model < 0 || model >= modelTeeth.Length || modelTeeth[model] == null)
+            {
+                return;
+            }
+
+            TeethSprites sprites = modelTeeth[model];
+            if (cleanTeeth != null && sprites.clean != null)
+            {
+                cleanTeeth.sprite = sprites.clean;
+            }
+
+            if (sprites.dirty != null)
+            {
+                dirtyTeeth.sprite = sprites.dirty;
+            }
         }
 
         public void HandlePointerDown(PointerEventData eventData)
@@ -203,6 +230,13 @@ namespace Care
 
             // After the return, so "Блестяще! Возвращайся в главную комнату" shows over the Care room.
             ServiceLocator.Get<TutorialService>().TryShow(TutorialStepIds.TeethDone);
+        }
+
+        [System.Serializable]
+        public class TeethSprites
+        {
+            public Sprite clean;
+            public Sprite dirty;
         }
     }
 }
