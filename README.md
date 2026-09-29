@@ -6,6 +6,14 @@
 
 Подробное описание архитектуры, механик и сборки лежит в [DOCUMENTATION.md](DOCUMENTATION.md).
 
+<p align="center">
+  <img width="260" alt="Fini_4" src="https://github.com/user-attachments/assets/922a6afd-9ed9-41d1-8f2e-4497587ef252" />
+  <img width="260" alt="Fini_3" src="https://github.com/user-attachments/assets/c21d039a-2a85-41b2-b6c3-835496f0b04b" />
+  <img width="260" alt="Fini_2" src="https://github.com/user-attachments/assets/40ec39ec-bc36-4a10-a9ac-ac11110fa809" />
+  <img width="260" alt="Fini_1" src="https://github.com/user-attachments/assets/f43ab8fb-43a9-421b-8c07-e0ce69b683ab" />
+  <img width="260" alt="Fini_0" src="https://github.com/user-attachments/assets/bef3d6e3-a941-4ed0-b087-29987a517386" />
+</p>
+
 ## Что нужно для запуска
 
 - **Unity 6000.3.20f1** (Unity 6.3). Проект можно открыть и в более новой версии 6000.3.x, но проверяли на этой.
