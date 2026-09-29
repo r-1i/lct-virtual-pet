@@ -33,7 +33,7 @@ namespace Feeding
             public FoodPileView prefab;
         }
 
-        [Tooltip("productId → pile prefab, one entry per product in products.json (6 for now).")]
+        [Tooltip("productId → pile prefab, one entry per food product in products.json (category food).")]
         [SerializeField] private PileEntry[] pilePrefabs;
 
         [SerializeField] private Button leftButton;
@@ -104,10 +104,13 @@ namespace Feeding
             return null;
         }
 
-        /// <summary>Re-reads what's owned (order kept stable by sorting on productId) and re-clamps the page.</summary>
+        /// <summary>Re-reads what food is owned (care items like soap stay off the table; order kept stable by sorting on productId) and re-clamps the page.</summary>
         private void Rebuild()
         {
-            _ownedProductIds = _playerData.GetOwnedProductIds().OrderBy(id => id).ToList();
+            _ownedProductIds = _playerData.GetOwnedProductIds()
+                .Where(id => _content.FindProduct(id)?.IsFood == true)
+                .OrderBy(id => id)
+                .ToList();
             _pageOffset = Mathf.Clamp(_pageOffset, 0, MaxOffset);
             Layout();
         }

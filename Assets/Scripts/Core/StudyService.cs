@@ -58,6 +58,24 @@ namespace Core
             return titles.Count == 0 ? $"Уровень {level}" : titles[Mathf.Clamp(level - 1, 0, titles.Count - 1)];
         }
 
+        /// <summary>"Малыш" for level 1 etc. Empty if themes.json has no petStages for this level.</summary>
+        public string PetStage(int level)
+        {
+            IReadOnlyList<string> stages = _content.PetStages;
+            return stages.Count == 0 ? "" : stages[Mathf.Clamp(level - 1, 0, stages.Count - 1)];
+        }
+
+        /// <summary>The rank's job income multiplier (economy.json).</summary>
+        public float IncomeMultiplier(int level) => _content.Economy.RankMultiplier(level);
+
+        /// <summary>"Младший (Молодой), доход ×1.25" — one line for the study screen and the promotion message.</summary>
+        public string RankSummary(int level)
+        {
+            string stage = PetStage(level);
+            string title = string.IsNullOrEmpty(stage) ? CareerTitle(level) : $"{CareerTitle(level)} ({stage})";
+            return $"{title}, доход ×{IncomeMultiplier(level):0.##}";
+        }
+
         public List<StudyTaskDefinition> TasksOf(StudyThemeDefinition theme) => _content.StudyTasksOf(theme.id).ToList();
 
         public bool IsTaskPassed(StudyTaskDefinition task) => _playerData.IsStudyTaskPassed(task.id);
@@ -183,6 +201,11 @@ namespace Core
 
         private StudyResult Finish(StudyTaskDefinition task, StudyResult result)
         {
+            if (!IsTaskPassed(task))
+            {
+                _playerData.RegisterStudyAttempt(task.id, result.Passed);
+            }
+
             if (!result.Passed || IsTaskPassed(task))
             {
                 return result;
@@ -195,7 +218,10 @@ namespace Core
             {
                 _playerData.SetLevel(theme.rewardLevel);
                 result.Promoted = true;
-                result.NewCareerTitle = CareerTitle(theme.rewardLevel);
+                string stage = PetStage(theme.rewardLevel);
+                result.NewCareerTitle = string.IsNullOrEmpty(stage)
+                    ? CareerTitle(theme.rewardLevel)
+                    : $"{CareerTitle(theme.rewardLevel)} ({stage})";
             }
 
             return result;

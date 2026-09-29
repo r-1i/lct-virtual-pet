@@ -23,6 +23,8 @@ namespace Study
 
         [Tooltip("\"Что получилось\" — outcome lines. Hidden when empty.")]
         [SerializeField] private TMP_Text outcomeLabel;
+        [Tooltip("Background plate of the outcome — hidden together with it. Optional.")]
+        [SerializeField] private GameObject outcomeRoot;
         [Tooltip("\"Почему так\"")]
         [SerializeField] private TMP_Text explanationLabel;
         [Tooltip("\"Вывод: …\" Hidden when empty.")]
@@ -58,7 +60,7 @@ namespace Study
             StudyViewUtils.SetActive(passedDecor, result.Passed);
             StudyViewUtils.SetActive(failedDecor, !result.Passed);
 
-            StudyViewUtils.SetOptional(outcomeLabel, string.Join("\n", result.Outcomes));
+            StudyViewUtils.SetOptional(outcomeLabel, string.Join("\n", result.Outcomes), outcomeRoot);
             StudyViewUtils.SetText(explanationLabel, result.Explanation);
             StudyViewUtils.SetOptional(lessonLabel, string.IsNullOrEmpty(result.Lesson) ? "" : $"Вывод: {result.Lesson}");
 

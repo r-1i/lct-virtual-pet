@@ -12,6 +12,10 @@ namespace Content
     {
         /// <summary>[0] = level 1 ("Стажёр"), [1] = level 2, ...</summary>
         public string[] careerTitles;
+
+        /// <summary>Pet stage per rank, same order: "Малыш", "Молодой", ... Shown next to the career title. The rank's income multiplier is in economy.json.</summary>
+        public string[] petStages;
+
         public StudyThemeDefinition[] themes;
     }
 

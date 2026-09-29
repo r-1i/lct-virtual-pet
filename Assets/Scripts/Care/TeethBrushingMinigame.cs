@@ -12,8 +12,8 @@ namespace Care
     /// The Sink zone itself is empty; entering it just opens a full-screen panel: clean-teeth image,
     /// the same image with yellow teeth on top, a toothbrush sprite under the finger, a 0-100%
     /// progress bar at the bottom. Dragging anywhere on the panel brushes: progress grows with the
-    /// distance the finger travels, the yellow overlay's alpha is 1 - progress. At 100% — health
-    /// reward and automatic return to Care, same as the shower.
+    /// distance the finger travels, the yellow overlay's alpha is 1 - progress. At 100% — one toothbrush
+    /// is used up (CareSupplies), health from it, and automatic return to Care, same as the shower.
     /// Can sit on any always-active object (e.g. the zone object) — input is caught on the panel by a
     /// TeethBrushingSurface this adds at Start, since UI events only bubble through the panel's parents.
     /// </summary>
@@ -43,7 +43,6 @@ namespace Care
         [Header("Balance")]
         [Tooltip("Total finger travel for 0 → 100%, in screen heights (so it's the same on every phone).")]
         [SerializeField] private float fullCleanDistance = 6f;
-        [SerializeField] private float healthReward = 20f;
 
         [Header("Auto-return to Care")]
         [SerializeField] private int careZoneIndex;
@@ -189,7 +188,11 @@ namespace Care
             _completed = true;
             StopBrushing();
 
-            _playerData.ApplyStatDelta(0f, 0f, healthReward);
+            // 1 toothbrush; health = its healthBoost (products.json). Entry is gated by ZoneEntryPoint.
+            float health = CareSupplies.Consume(_playerData, ServiceLocator.Get<Content.ContentDatabase>(), CareSupplies.Teeth);
+            UI.Feedback.StatsSnapshot before = UI.Feedback.Snapshot(_playerData);
+            _playerData.ApplyStatDelta(0f, 0f, health);
+            UI.Feedback.Show(UI.Feedback.Join("−1 зубная щётка", UI.Feedback.StatChanges(before, UI.Feedback.Snapshot(_playerData))));
 
             Invoke(nameof(ReturnToCare), returnDelay);
         }

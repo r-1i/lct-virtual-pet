@@ -241,7 +241,11 @@ namespace Dreams
 
         private void HandleDeposit()
         {
-            _playerData.TryMoveCoinsToJar(_amount);
+            int amount = _amount;
+            if (_playerData.TryMoveCoinsToJar(amount))
+            {
+                Feedback.Show(Feedback.Join(Feedback.Coins(-amount), $"+{amount} в копилку"));
+            }
         }
 
         private void HandleWithdraw()
@@ -252,7 +256,13 @@ namespace Dreams
                 return;
             }
 
-            confirmDialog.Show(BuildWithdrawWarning(amount), () => _playerData.TryMoveJarToCoins(amount));
+            confirmDialog.Show(BuildWithdrawWarning(amount), () =>
+            {
+                if (_playerData.TryMoveJarToCoins(amount))
+                {
+                    Feedback.Show(Feedback.Join($"−{amount} из копилки", Feedback.Coins(amount)));
+                }
+            });
         }
 
         private string BuildWithdrawWarning(int amount)
@@ -285,6 +295,7 @@ namespace Dreams
             {
                 if (_dreams.TryPurchaseCurrent())
                 {
+                    Feedback.Show($"Мечта сбылась: {dream.title}! · −{dream.price} из копилки");
                     Debug.Log($"Dreams: bought '{dream.id}' for {dream.price}.");
                     PlayPurchasePop();
                 }

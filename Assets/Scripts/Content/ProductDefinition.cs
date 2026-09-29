@@ -9,12 +9,22 @@ namespace Content
         public string id;
         public string title;
 
-        /// <summary>Plain display text, e.g. "7 дней" — not computed, just shown as-is in the shop panel.</summary>
-        public string expiryDate;
+        // Shelf life isn't per product: every food spoils after economy.json → foodExpiryDays, care items never.
 
         /// <summary>Restored on feeding, not on purchase — see PLAN.md section 4/5.</summary>
         public float happinessBoost;
         public float satietyBoost;
+
+        /// <summary>Food: added on feeding. Care items: what one use in the shower / teeth minigame gives.</summary>
+        public float healthBoost;
+
+        /// <summary>"Нужно" tab kind: "food" (goes to the feeding table) or "care" (soap, washcloth, toothbrush — used up by the care minigames). Empty = food.</summary>
+        public string category;
+
+        public bool IsCare => category == "care";
+
+        /// <summary>Shown on the feeding table: an inventory product that isn't a care item.</summary>
+        public bool IsFood => !instantUse && !IsCare;
 
         /// <summary>
         /// "Хочу" tab product: never goes to the inventory, buying it applies happinessBoost to mood

@@ -21,12 +21,16 @@ namespace Shop
         [SerializeField] private TMP_Text happinessLabel;
         [SerializeField] private TMP_Text priceLabel;
         [SerializeField] private TMP_Text cashbackLabel;
+        [Tooltip("Optional. The cashback badge (label + icon) — hidden when the cashback is 0.")]
+        [SerializeField] private GameObject cashbackGroup;
         [SerializeField] private Button buyButton;
         [SerializeField] private Button closeButton;
         [SerializeField] private float fadeDuration = 0.2f;
 
         private PlayerDataService _playerData;
         private ProductDefinition _product;
+
+        private float CashbackPercent => ServiceLocator.Get<ContentDatabase>().Economy.cashbackWantPercent;
 
         private void Awake()
         {
@@ -36,7 +40,7 @@ namespace Shop
 
         private void Start()
         {
-            _playerData = ServiceLocator.Get<PlayerDataService>();
+            _playerData ??= ServiceLocator.Get<PlayerDataService>();
             EventBus.Subscribe<CoinsChangedEvent>(OnCoinsChanged);
         }
 
@@ -49,6 +53,8 @@ namespace Shop
 
         public void Show(ProductDefinition product)
         {
+            // The panel starts inactive, so the first Show comes before Start.
+            _playerData ??= ServiceLocator.Get<PlayerDataService>();
             _product = product;
 
             titleLabel.text = product.title;
@@ -84,10 +90,16 @@ namespace Shop
             }
 
             int price = _product.GetPrice(Quantity);
-            int cashback = Mathf.RoundToInt(price * ProductDetailPanel.CashbackRate);
+            int cashback = ProductDetailPanel.Cashback(price, CashbackPercent);
 
             priceLabel.text = $"{price}";
-            cashbackLabel.text = $"+{cashback}";
+            cashbackLabel.text = $"+{cashback} завтра";
+            // "Хочу" gives no cashback by default (economy.json → cashbackWantPercent = 0) — hide the badge then.
+            if (cashbackGroup != null)
+            {
+                cashbackGroup.SetActive(cashback > 0);
+            }
+
             buyButton.interactable = _playerData != null && _playerData.Coins >= price;
         }
 
@@ -105,11 +117,14 @@ namespace Shop
                 return;
             }
 
-            int cashback = Mathf.RoundToInt(price * ProductDetailPanel.CashbackRate);
-            _playerData.AddJarCoins(cashback);
+            int cashback = ProductDetailPanel.Cashback(price, CashbackPercent);
+            _playerData.AddPendingCashback(cashback);
+            UI.Feedback.StatsSnapshot before = UI.Feedback.Snapshot(_playerData);
             _playerData.ApplyStatDelta(0f, _product.happinessBoost, 0f);
             _playerData.LogMoney(MoneyKind.BuyWant, price, _product.title, Quantity);
-            _playerData.LogMoney(MoneyKind.Cashback, cashback, _product.title);
+            // Overflow: at mood 70 a +100 item gives only +30 — show what really arrived.
+            string joy = UI.Feedback.StatChanges(before, UI.Feedback.Snapshot(_playerData));
+            UI.Feedback.Show(UI.Feedback.Join(UI.Feedback.Coins(-price), string.IsNullOrEmpty(joy) ? "питомец и так счастлив" : joy));
 
             Debug.Log($"Shop: bought {_product.title} for {price} (+{cashback} cashback, +{_product.happinessBoost} mood).");
 

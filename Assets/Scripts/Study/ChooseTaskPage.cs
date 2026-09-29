@@ -37,6 +37,10 @@ namespace Study
         [Tooltip("\"Что купишь?\" Hidden when empty. Optional.")]
         [SerializeField] private TMP_Text questionLabel;
         [SerializeField] private ChooseOptionView[] optionSlots = Array.Empty<ChooseOptionView>();
+        [Tooltip("Parent of the option slots. If set, the used slots are spread evenly across its width (2 options = two halves). Optional — without it the slots stay where they were placed.")]
+        [SerializeField] private RectTransform optionsArea;
+        [Tooltip("Gap between option cards, as a fraction of Options Area width.")]
+        [SerializeField] private float optionsGap = 0.03f;
         [Tooltip("\"Подумай: …\" Hidden when empty. Optional.")]
         [SerializeField] private TMP_Text footerHintLabel;
         [Tooltip("Background plate of the footer hint — hidden together with it. Optional.")]
@@ -93,6 +97,33 @@ namespace Study
                     int index = i;
                     optionSlots[i].Setup(task.options[i], sprites(task.options[i].iconKey), () => _onSubmit?.Invoke(index));
                 }
+            }
+
+            ArrangeOptions(Mathf.Min(task.options.Length, optionSlots.Length));
+        }
+
+        /// <summary>Used slots side by side, equal widths, full height of the area.</summary>
+        private void ArrangeOptions(int used)
+        {
+            if (optionsArea == null || used <= 0)
+            {
+                return;
+            }
+
+            float width = (1f - optionsGap * (used - 1)) / used;
+            for (int i = 0; i < used; i++)
+            {
+                var rt = (RectTransform)optionSlots[i].transform;
+                if (rt.parent != optionsArea)
+                {
+                    continue;
+                }
+
+                float x0 = i * (width + optionsGap);
+                rt.anchorMin = new Vector2(x0, 0f);
+                rt.anchorMax = new Vector2(x0 + width, 1f);
+                rt.offsetMin = Vector2.zero;
+                rt.offsetMax = Vector2.zero;
             }
         }
 

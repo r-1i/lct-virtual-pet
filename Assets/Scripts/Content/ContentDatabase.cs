@@ -12,6 +12,7 @@ namespace Content
         private const string TutorialResourcePath = "Content/tutorial";
         private const string DreamsResourcePath = "Content/dreams";
         private const string FinanceResourcePath = "Content/finance";
+        private const string EconomyResourcePath = "Content/economy";
         private const string StudyThemesResourcePath = "Study/themes";
         private const string StudyTasksResourceFolder = "Study/Tasks";
 
@@ -24,8 +25,14 @@ namespace Content
 
         public FinanceSettings Finance { get; }
 
+        /// <summary>Stat decay, stats → income, shift limit (economy.json).</summary>
+        public EconomySettings Economy { get; }
+
         /// <summary>[0] = level 1.</summary>
         public IReadOnlyList<string> CareerTitles { get; }
+
+        /// <summary>[0] = level 1 ("Малыш"). May be shorter than CareerTitles or empty.</summary>
+        public IReadOnlyList<string> PetStages { get; }
 
         /// <summary>Sorted by order.</summary>
         public IReadOnlyList<StudyThemeDefinition> StudyThemes { get; }
@@ -40,9 +47,11 @@ namespace Content
             TutorialSteps = LoadTutorialSteps();
             Dreams = LoadDreams();
             Finance = LoadFinance();
+            Economy = LoadEconomy();
 
             StudyThemesFile studyFile = LoadStudyThemes();
             CareerTitles = studyFile.careerTitles?.ToList() ?? new List<string>();
+            PetStages = studyFile.petStages?.ToList() ?? new List<string>();
             StudyThemes = (studyFile.themes ?? new StudyThemeDefinition[0]).OrderBy(t => t.order).ToList();
             StudyTasks = LoadStudyTasks(StudyThemes);
         }
@@ -120,6 +129,27 @@ namespace Content
             }
 
             return JsonUtility.FromJson<FinanceSettings>(asset.text) ?? new FinanceSettings();
+        }
+
+        /// <summary>Missing file = the defaults from EconomySettings' field initializers (same numbers as economy.json).</summary>
+        private static EconomySettings LoadEconomy()
+        {
+            TextAsset asset = Resources.Load<TextAsset>(EconomyResourcePath);
+            if (asset == null)
+            {
+                Debug.LogError($"ContentDatabase: Resources/{EconomyResourcePath}.json not found, using defaults.");
+                return new EconomySettings();
+            }
+
+            EconomySettings settings = JsonUtility.FromJson<EconomySettings>(asset.text) ?? new EconomySettings();
+            settings.passiveDecayPerDay ??= new StatAmounts();
+            if (settings.shiftTypes == null || settings.shiftTypes.Length == 0)
+            {
+                Debug.LogError("ContentDatabase: economy.json has no shiftTypes, using defaults.");
+                settings.shiftTypes = new EconomySettings().shiftTypes;
+            }
+
+            return settings;
         }
 
         private static StudyThemesFile LoadStudyThemes()

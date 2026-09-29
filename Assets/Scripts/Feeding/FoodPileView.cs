@@ -43,8 +43,12 @@ namespace Feeding
                 return;
             }
 
-            // Happiness → Настроение, satiety → Сытость; health isn't affected by feeding (only care/hygiene raises it).
-            _playerData.ApplyStatDelta(_product.satietyBoost, _product.happinessBoost, 0f);
+            // Happiness → Настроение, satiety → Сытость, health → Здоровье (only some food, e.g. the large feed).
+            UI.Feedback.StatsSnapshot before = UI.Feedback.Snapshot(_playerData);
+            _playerData.ApplyStatDelta(_product.satietyBoost, _product.happinessBoost, _product.healthBoost);
+            // Overflow is silent in the stats, but the message shows what really got in.
+            string gained = UI.Feedback.StatChanges(before, UI.Feedback.Snapshot(_playerData));
+            UI.Feedback.Show(string.IsNullOrEmpty(gained) ? "Питомец уже сыт — корм пропал зря" : gained);
             _character.PlayEat();
             ServiceLocator.Get<TutorialService>().TryShow(TutorialStepIds.FedHappy);
             // FoodTableView rebuilds this whole pile (or removes it if it hit 0) on

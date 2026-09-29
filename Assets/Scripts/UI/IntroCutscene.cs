@@ -1,4 +1,5 @@
 using Core;
+using Creation;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,6 +31,10 @@ namespace UI
         [Tooltip("Same order as Slides: element N plays when slide N appears. Can be shorter than Slides or have empty elements — those slides are silent.")]
         [SerializeField] private AudioClip[] slideSounds;
 
+        [Header("After the cutscene")]
+        [Tooltip("First-launch character creation, shown after the cutscene and before the tutorial. Empty = straight to the tutorial.")]
+        [SerializeField] private CharacterCreationFlow characterCreation;
+
         private PlayerDataService _playerData;
         private Image _front;
         private Image _back;
@@ -46,7 +51,7 @@ namespace UI
             if (!_playerData.IsFirstLaunch || slides == null || slides.Length == 0)
             {
                 gameObject.SetActive(false);
-                StartTutorial();
+                ContinueAfterCutscene();
                 return;
             }
 
@@ -138,11 +143,24 @@ namespace UI
             canvasGroup.DOFade(0f, Duration).OnComplete(() =>
             {
                 gameObject.SetActive(false);
-                StartTutorial();
+                ContinueAfterCutscene();
             });
         }
 
-        /// <summary>The greeting chain starts right after the cutscene (or at launch when there's no cutscene). No-op once the tutorial is past that step.</summary>
+        /// <summary>Character creation (skipped at once if the character exists), then the tutorial.</summary>
+        private void ContinueAfterCutscene()
+        {
+            if (characterCreation != null)
+            {
+                characterCreation.Run(StartTutorial);
+            }
+            else
+            {
+                StartTutorial();
+            }
+        }
+
+        /// <summary>The greeting chain starts right after the character creation. No-op once the tutorial is past that step.</summary>
         private static void StartTutorial()
         {
             ServiceLocator.Get<TutorialService>().TryShow(TutorialStepIds.Welcome);

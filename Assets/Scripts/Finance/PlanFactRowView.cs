@@ -15,7 +15,7 @@ namespace Finance
     /// <summary>One "план и факт" row: bar (fact / plan), "15/20", ✓ or ✗. Used on the planning screen and in the result popup.</summary>
     public class PlanFactRowView : MonoBehaviour
     {
-        [Tooltip("Image Type = Filled. fillAmount = fact / plan.")]
+        [Tooltip("Filled → fillAmount = fact / plan. Sliced → its right anchor = fact / plan (anchor left edge at 0).")]
         [SerializeField] private Image fill;
         [Tooltip("\"15/20\"")]
         [SerializeField] private TMP_Text valueLabel;
@@ -38,7 +38,19 @@ namespace Finance
 
             if (fill != null)
             {
-                fill.fillAmount = plan > 0 ? Mathf.Clamp01(fact / (float)plan) : (fact > 0 ? 1f : 0f);
+                float amount = plan > 0 ? Mathf.Clamp01(fact / (float)plan) : (fact > 0 ? 1f : 0f);
+                if (fill.type == Image.Type.Filled)
+                {
+                    fill.fillAmount = amount;
+                }
+                else
+                {
+                    // Sliced fill (rounded ends): the width follows the right anchor, the fill stays hidden at 0.
+                    RectTransform rt = fill.rectTransform;
+                    rt.anchorMax = new Vector2(amount, rt.anchorMax.y);
+                    fill.enabled = amount > 0f;
+                }
+
                 fill.color = failed ? badColor : normalColor;
             }
 

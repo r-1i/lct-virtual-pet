@@ -36,6 +36,8 @@ namespace Home
         [SerializeField] private float playbackPitch = 1.7f;
 
         [Header("Animation")]
+        [Tooltip("Gives the Animator of the model shown right now. Empty = the Character Animator field below is used.")]
+        [SerializeField] private CharacterAppearance characterAppearance;
         [SerializeField] private Animator characterAnimator;
         [SerializeField] private string talkingParam = "IsTalking";
 
@@ -271,10 +273,7 @@ namespace Home
                 _talkingRoutine = null;
             }
 
-            if (characterAnimator != null)
-            {
-                characterAnimator.SetBool(talkingParam, false);
-            }
+            SetTalking(false);
 
             if (playbackSource != null)
             {
@@ -282,19 +281,22 @@ namespace Home
             }
         }
 
+        private void SetTalking(bool talking)
+        {
+            Animator current = characterAppearance != null ? characterAppearance.Animator : characterAnimator;
+            if (current != null)
+            {
+                current.SetBool(talkingParam, talking);
+            }
+        }
+
         private IEnumerator TalkingAnimationRoutine(float duration)
         {
-            if (characterAnimator != null)
-            {
-                characterAnimator.SetBool(talkingParam, true);
-            }
+            SetTalking(true);
 
             yield return new WaitForSeconds(duration);
 
-            if (characterAnimator != null)
-            {
-                characterAnimator.SetBool(talkingParam, false);
-            }
+            SetTalking(false);
 
             _talkingRoutine = null;
         }

@@ -1,17 +1,16 @@
 {
   "products": [
-    { "id": "apple", "title": "Яблоко", "expiryDate": "7 дней", "happinessBoost": 5, "satietyBoost": 15, "quantities": [1, 5, 10], "prices": [10, 45, 80] },
-    { "id": "sandwich", "title": "Бутерброд", "expiryDate": "2 дня", "happinessBoost": 8, "satietyBoost": 25, "quantities": [1, 5, 10], "prices": [18, 80, 150] },
-    { "id": "milk", "title": "Молоко", "expiryDate": "5 дней", "happinessBoost": 3, "satietyBoost": 10, "quantities": [1, 5, 10], "prices": [8, 35, 60] },
-    { "id": "cookie", "title": "Печенье", "expiryDate": "30 дней", "happinessBoost": 15, "satietyBoost": 8, "quantities": [1, 5, 10], "prices": [12, 55, 100] },
-    { "id": "salad", "title": "Салат", "expiryDate": "3 дня", "happinessBoost": 4, "satietyBoost": 20, "quantities": [1, 5, 10], "prices": [15, 65, 120] },
-    { "id": "juice", "title": "Сок", "expiryDate": "14 дней", "happinessBoost": 10, "satietyBoost": 12, "quantities": [1, 5, 10], "prices": [14, 60, 110] },
+    { "id": "feed_medium", "title": "Средний корм", "category": "food", "satietyBoost": 30, "quantities": [1, 3, 5], "prices": [20, 51, 75] },
+    { "id": "feed_large", "title": "Большой корм", "category": "food", "satietyBoost": 55, "quantities": [1, 3, 5], "prices": [32, 81, 120] },
+    { "id": "soap", "title": "Мыло", "category": "care", "healthBoost": 20, "quantities": [1, 3, 5], "prices": [12, 30, 48] },
+    { "id": "washcloth", "title": "Мочалка", "category": "care", "healthBoost": 30, "quantities": [1, 3, 5], "prices": [25, 63, 95] },
+    { "id": "toothbrush", "title": "Зубная щётка", "category": "care", "healthBoost": 20, "quantities": [1, 3, 5], "prices": [15, 39, 60] },
 
-    { "id": "toy", "title": "Игрушка", "instantUse": true, "happinessBoost": 20, "quantities": [1], "prices": [40] },
-    { "id": "balloon", "title": "Воздушный шарик", "instantUse": true, "happinessBoost": 10, "quantities": [1], "prices": [15] },
-    { "id": "comic", "title": "Комикс", "instantUse": true, "happinessBoost": 15, "quantities": [1], "prices": [25] },
-    { "id": "ice_cream", "title": "Мороженое", "instantUse": true, "happinessBoost": 12, "quantities": [1], "prices": [20] },
-    { "id": "sticker", "title": "Наклейки", "instantUse": true, "happinessBoost": 6, "quantities": [1], "prices": [8] },
-    { "id": "game", "title": "Видеоигра", "instantUse": true, "happinessBoost": 35, "quantities": [1], "prices": [90] }
+    { "id": "chocolate_bar", "title": "Шоколадка", "instantUse": true, "happinessBoost": 25, "quantities": [1], "prices": [20] },
+    { "id": "yoyo", "title": "Йо-йо", "instantUse": true, "happinessBoost": 45, "quantities": [1], "prices": [30] },
+    { "id": "plush", "title": "Плюшевая игрушка", "instantUse": true, "happinessBoost": 70, "quantities": [1], "prices": [50] },
+    { "id": "spinner", "title": "Спинер", "instantUse": true, "happinessBoost": 85, "quantities": [1], "prices": [65] },
+    { "id": "headphones", "title": "Наушники", "instantUse": true, "happinessBoost": 95, "quantities": [1], "prices": [80] },
+    { "id": "phone", "title": "Телефон", "instantUse": true, "happinessBoost": 100, "quantities": [1], "prices": [95] }
   ]
 }

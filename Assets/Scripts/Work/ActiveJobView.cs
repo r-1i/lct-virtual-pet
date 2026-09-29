@@ -55,7 +55,10 @@ namespace Work
 
             if (timeLabel != null)
             {
-                timeLabel.text = ready ? readyText : string.Format(inProgressFormat, JobFormat.Countdown(_jobService.RemainingSeconds));
+                // The pay was fixed when the shift started — show it once it can be collected.
+                timeLabel.text = ready
+                    ? $"{readyText} +{UI.RuPlural.Coins(_jobService.ActiveReward)}"
+                    : string.Format(inProgressFormat, JobFormat.Countdown(_jobService.RemainingSeconds));
             }
         }
 
@@ -63,6 +66,7 @@ namespace Work
         {
             if (_jobService.TryCollect(out int reward))
             {
+                UI.Feedback.Show($"Зарплата: {UI.Feedback.Coins(reward)}");
                 Debug.Log($"Work: collected {reward} coins.");
                 ServiceLocator.Get<TutorialService>().TryShow(TutorialStepIds.FirstMoney);
             }

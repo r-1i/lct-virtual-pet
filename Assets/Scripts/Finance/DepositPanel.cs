@@ -55,7 +55,7 @@ namespace Finance
             daysMinusButton.onClick.AddListener(() => SetDays(_days - 1));
             daysPlusButton.onClick.AddListener(() => SetDays(_days + 1));
             openButton.onClick.AddListener(HandleOpen);
-            collectButton.onClick.AddListener(() => _finance.TryCollectDeposit());
+            collectButton.onClick.AddListener(HandleCollect);
             earlyWithdrawButton.onClick.AddListener(HandleEarlyWithdraw);
         }
 
@@ -170,17 +170,39 @@ namespace Finance
 
         private void HandleOpen()
         {
-            if (!_finance.TryOpenDeposit(_amount, _days, out string error))
+            int amount = _amount, days = _days;
+            if (!_finance.TryOpenDeposit(amount, days, out string error))
             {
+                Feedback.Show(error);
                 Debug.LogWarning($"Deposit: {error}");
+                return;
+            }
+
+            Feedback.Show(Feedback.Join(Feedback.Coins(-amount), $"вклад у Барсука на {RuPlural.Days(days)}"));
+        }
+
+        private void HandleCollect()
+        {
+            BankDeposit deposit = _finance.Deposit;
+            int amount = deposit.amount, bonus = deposit.bonus;
+            if (_finance.TryCollectDeposit())
+            {
+                Feedback.Show(Feedback.Join(Feedback.Coins(amount + bonus), $"из них проценты +{bonus}"));
             }
         }
 
         private void HandleEarlyWithdraw()
         {
             BankDeposit deposit = _finance.Deposit;
-            string message = $"Если забрать сейчас, Барсук вернёт только {RuPlural.Coins(deposit.amount)}, без +{deposit.bonus}. Забрать?";
-            confirmDialog.Show(message, () => _finance.TryWithdrawDepositEarly());
+            int amount = deposit.amount;
+            string message = $"Если забрать сейчас, Барсук вернёт только {RuPlural.Coins(amount)}, без +{deposit.bonus}. Забрать?";
+            confirmDialog.Show(message, () =>
+            {
+                if (_finance.TryWithdrawDepositEarly())
+                {
+                    Feedback.Show(Feedback.Join(Feedback.Coins(amount), "без процентов"));
+                }
+            });
         }
     }
 }

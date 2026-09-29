@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using Core;
 using Home;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Care
 {
@@ -67,8 +69,27 @@ namespace Care
         [SerializeField] private float minRinseInterval = 0.08f;
         [SerializeField] private float maxRinseInterval = 0.25f;
 
-        [Header("Reward")]
-        [SerializeField] private float healthReward = 20f;
+        [Header("Progress UI (like teeth brushing) — shown only in the shower zone")]
+        [Tooltip("Root of the progress panel (phase + bar + %). SetActive'd on zone enter/leave.")]
+        [SerializeField] private GameObject hudRoot;
+        [SerializeField] private TMP_Text phaseLabel;
+        [Tooltip("Image Type = Filled. fillAmount = progress of the current phase.")]
+        [SerializeField] private Image progressFill;
+        [Tooltip("Optional \"42%\" label.")]
+        [SerializeField] private TMP_Text progressLabel;
+        [SerializeField] private string applyingText = "Намыливаем";
+        [SerializeField] private string clearingText = "Смываем пену";
+        [SerializeField] private string doneText = "Чистенький!";
+
+        [Header("Sounds")]
+        [Tooltip("Loop, Play On Awake off. Plays while the sponge is on the character.")]
+        [SerializeField] private AudioSource latherSound;
+        [Tooltip("Loop, Play On Awake off. Plays while rinsing (finger held).")]
+        [SerializeField] private AudioSource showerSound;
+        [Tooltip("Optional one-shot (the pet giggles) — now and then while lathering.")]
+        [SerializeField] private AudioSource giggleSound;
+        [SerializeField] private float minGiggleInterval = 3f;
+        [SerializeField] private float maxGiggleInterval = 6f;
 
         [Header("Auto-return to Care")]
         [SerializeField] private int careZoneIndex;
@@ -80,6 +101,9 @@ namespace Care
         private Vector3 _showerHeadHomePosition;
         private readonly List<Transform> _bubbles = new List<Transform>();
         private PlayerDataService _playerData;
+        private int _bubblesAtRinseStart;
+        private float _giggleTimer;
+        private bool _wasInZone;
 
         private void Awake()
         {
@@ -101,32 +125,59 @@ namespace Care
 
         private void OnEnable()
         {
+            _wasInZone = false;
+            ResetGame();
+            SetHudVisible(false);
+        }
+
+        /// <summary>Fresh round: the shower object stays enabled all game, so this runs every time the player enters the zone.</summary>
+        private void ResetGame()
+        {
+            CancelInvoke(nameof(ReturnToCare));
             _phase = Phase.Applying;
+            _rinseTimer = 0f;
+            _bubblesAtRinseStart = 0;
             ClearAllBubbles();
             SetToolsVisible(false, false);
+            StopSounds();
         }
 
         private void OnDisable()
         {
             ClearAllBubbles();
+            SetHudVisible(false);
+            StopSounds();
         }
 
         private void Update()
         {
+            bool inZone = zoneManager != null && zoneManager.CurrentZoneIndex == activeZoneIndex;
+            if (inZone && !_wasInZone)
+            {
+                ResetGame();
+            }
+
+            _wasInZone = inZone;
+            SetHudVisible(inZone);
+
             if (_phase == Phase.Done)
             {
                 return;
             }
 
-            if (zoneManager == null || zoneManager.CurrentZoneIndex != activeZoneIndex)
+            if (!inZone)
             {
                 SetToolsVisible(false, false);
+                StopSounds();
                 return;
             }
+
+            RefreshHud();
 
             if (!TryGetHeldPointer(out Vector2 screenPosition) || PointerUtils.IsPointerOverUi(screenPosition))
             {
                 SetToolsVisible(false, false);
+                StopSounds();
                 return;
             }
 
@@ -146,17 +197,22 @@ namespace Care
             if (!TryStickToCharacter(screenPosition, out Vector3 hitPoint, out Vector3 hitNormal))
             {
                 SetToolsVisible(false, false);
+                SetLoop(latherSound, false);
                 return;
             }
 
             PositionSponge(hitPoint, hitNormal);
             SetToolsVisible(true, false);
+            SetLoop(latherSound, true);
+            TickGiggle();
 
             TickSpawning(hitPoint);
 
             if (_bubbles.Count >= targetBubbleCount)
             {
                 _phase = Phase.Clearing;
+                _bubblesAtRinseStart = _bubbles.Count;
+                SetLoop(latherSound, false);
                 ServiceLocator.Get<TutorialService>().TryShow(TutorialStepIds.Rinse);
             }
         }
@@ -166,6 +222,7 @@ namespace Care
         {
             MoveShowerHead(screenPosition);
             SetToolsVisible(false, true);
+            SetLoop(showerSound, true);
 
             TickRinsing();
 
@@ -349,12 +406,109 @@ namespace Care
             }
         }
 
+        // ---------- progress UI ----------
+
+        private void SetHudVisible(bool visible)
+        {
+            if (hudRoot != null && hudRoot.activeSelf != visible)
+            {
+                hudRoot.SetActive(visible);
+            }
+        }
+
+        /// <summary>Lathering: bubbles / target. Rinsing: how much of the foam is gone. Each phase goes 0 → 100%.</summary>
+        private void RefreshHud()
+        {
+            float progress;
+            string phase;
+            switch (_phase)
+            {
+                case Phase.Applying:
+                    progress = targetBubbleCount > 0 ? (float)_bubbles.Count / targetBubbleCount : 1f;
+                    phase = applyingText;
+                    break;
+                case Phase.Clearing:
+                    progress = _bubblesAtRinseStart > 0 ? 1f - (float)_bubbles.Count / _bubblesAtRinseStart : 1f;
+                    phase = clearingText;
+                    break;
+                default:
+                    progress = 1f;
+                    phase = doneText;
+                    break;
+            }
+
+            progress = Mathf.Clamp01(progress);
+            if (progressFill != null)
+            {
+                progressFill.fillAmount = progress;
+            }
+
+            if (progressLabel != null)
+            {
+                progressLabel.text = $"{Mathf.FloorToInt(progress * 100f)}%";
+            }
+
+            if (phaseLabel != null)
+            {
+                phaseLabel.text = phase;
+            }
+        }
+
+        // ---------- sounds ----------
+
+        private static void SetLoop(AudioSource source, bool playing)
+        {
+            if (source == null || source.isPlaying == playing)
+            {
+                return;
+            }
+
+            if (playing)
+            {
+                source.loop = true;
+                source.Play();
+            }
+            else
+            {
+                source.Stop();
+            }
+        }
+
+        private void StopSounds()
+        {
+            SetLoop(latherSound, false);
+            SetLoop(showerSound, false);
+        }
+
+        private void TickGiggle()
+        {
+            if (giggleSound == null)
+            {
+                return;
+            }
+
+            _giggleTimer -= Time.deltaTime;
+            if (_giggleTimer > 0f)
+            {
+                return;
+            }
+
+            _giggleTimer = Random.Range(minGiggleInterval, maxGiggleInterval);
+            giggleSound.Play();
+        }
+
         private void Complete()
         {
             _phase = Phase.Done;
             SetToolsVisible(false, false);
+            StopSounds();
+            RefreshHud();
 
-            _playerData.ApplyStatDelta(0f, 0f, healthReward);
+            // 1 soap + 1 washcloth; health = their healthBoost together (products.json). Entry is gated by ZoneEntryPoint.
+            float health = CareSupplies.Consume(_playerData, ServiceLocator.Get<Content.ContentDatabase>(), CareSupplies.Shower);
+            UI.Feedback.StatsSnapshot before = UI.Feedback.Snapshot(_playerData);
+            _playerData.ApplyStatDelta(0f, 0f, health);
+            UI.Feedback.Show(UI.Feedback.Join("−1 мыло, −1 мочалка", UI.Feedback.StatChanges(before, UI.Feedback.Snapshot(_playerData))));
 
             Invoke(nameof(ReturnToCare), returnDelay);
         }

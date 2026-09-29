@@ -18,7 +18,11 @@ namespace Home
         [SerializeField] private string boomboxPlayingParam = "IsPlaying";
 
         [Header("Player")]
+        [Tooltip("Gives the Animator of the model shown right now. Empty = the Player Animator field below is used.")]
+        [SerializeField] private CharacterAppearance playerAppearance;
         [SerializeField] private Animator playerAnimator;
+
+        private Animator PlayerAnimator => playerAppearance != null ? playerAppearance.Animator : playerAnimator;
         [SerializeField] private string playerDanceParam = "IsDancing";
 
         [Header("Input")]
@@ -96,6 +100,16 @@ namespace Home
             }
         }
 
+        /// <summary>Turns the player's dance back on if the music is still playing (e.g. after work, which forces the dance off).</summary>
+        public void ReapplyPlayerDance()
+        {
+            Animator player = PlayerAnimator;
+            if (IsPlaying && player != null)
+            {
+                player.SetBool(playerDanceParam, true);
+            }
+        }
+
         private void Play()
         {
             IsPlaying = true;
@@ -110,9 +124,10 @@ namespace Home
                 boomboxAnimator.SetBool(boomboxPlayingParam, true);
             }
 
-            if (playerAnimator != null)
+            Animator player = PlayerAnimator;
+            if (player != null)
             {
-                playerAnimator.SetBool(playerDanceParam, true);
+                player.SetBool(playerDanceParam, true);
             }
 
             Played?.Invoke();
@@ -132,9 +147,10 @@ namespace Home
                 boomboxAnimator.SetBool(boomboxPlayingParam, false);
             }
 
-            if (playerAnimator != null)
+            Animator player = PlayerAnimator;
+            if (player != null)
             {
-                playerAnimator.SetBool(playerDanceParam, false);
+                player.SetBool(playerDanceParam, false);
             }
 
             Stopped?.Invoke();

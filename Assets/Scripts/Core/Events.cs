@@ -80,6 +80,16 @@ namespace Core
     {
     }
 
+    /// <summary>Published by PlayerDataService when the character is created (or the creation is reset from debug). Read the look from PlayerDataService.</summary>
+    public readonly struct CharacterChangedEvent
+    {
+    }
+
+    /// <summary>Published by MailService when a letter arrives, is read, or letters are removed. Read the list from MailService.</summary>
+    public readonly struct MailChangedEvent
+    {
+    }
+
     /// <summary>Published by ZoneManager after GoToZone finishes (camera always moves; the character only if it wasn't busy). Index matches ZoneManager's Zones array.</summary>
     public readonly struct ZoneChangedEvent
     {

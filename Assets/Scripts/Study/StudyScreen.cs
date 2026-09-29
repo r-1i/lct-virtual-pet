@@ -28,7 +28,7 @@ namespace Study
         [SerializeField] private TMP_Text careerTitleLabel;
         [Tooltip("\"до повышения: сдать тему «…»\" / \"Высшая должность!\"")]
         [SerializeField] private TMP_Text careerNextLabel;
-        [Tooltip("Image Type = Filled. (level − 1) / (max level − 1). Optional.")]
+        [Tooltip("(level − 1) / (max level − 1). Filled → fillAmount; Sliced → right anchor (left anchor at 0). Optional.")]
         [SerializeField] private Image careerProgressFill;
         [Tooltip("\"Стажёр → Младший → …\" with the current one in bold. Optional.")]
         [SerializeField] private TMP_Text careerStepsLabel;
@@ -112,14 +112,25 @@ namespace Study
             int level = _study.Level;
             int max = _study.MaxLevel;
 
-            careerTitleLabel.text = $"Карьера: {_study.CareerTitle(level)}";
+            careerTitleLabel.text = $"Карьера: {_study.RankSummary(level)}";
 
             StudyThemeDefinition next = _study.NextTheme;
             StudyViewUtils.SetText(careerNextLabel, next != null ? $"до повышения: сдать тему «{next.title}»" : "Высшая должность!");
 
             if (careerProgressFill != null)
             {
-                careerProgressFill.fillAmount = max > 1 ? Mathf.Clamp01((level - 1) / (float)(max - 1)) : 1f;
+                float amount = max > 1 ? Mathf.Clamp01((level - 1) / (float)(max - 1)) : 1f;
+                if (careerProgressFill.type == Image.Type.Filled)
+                {
+                    careerProgressFill.fillAmount = amount;
+                }
+                else
+                {
+                    // Sliced fill (rounded ends): the width follows the right anchor, hidden at 0.
+                    RectTransform rt = careerProgressFill.rectTransform;
+                    rt.anchorMax = new Vector2(amount, rt.anchorMax.y);
+                    careerProgressFill.enabled = amount > 0f;
+                }
             }
 
             if (careerStepsLabel != null)

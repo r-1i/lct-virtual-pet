@@ -234,10 +234,13 @@ namespace Core
             return $"Совпадёт план и факт — Барсук даст +{Settings.planRewardCoins}. Разойдётся — подскажем почему.";
         }
 
-        /// <summary>Rewards of the jobs at the player's level — for the "сколько я заработаю" hint in the plan editor.</summary>
+        /// <summary>What the jobs at the player's level would pay with the current stats — for the "сколько я заработаю" hint in the plan editor.</summary>
         public bool TryGetJobRewardRange(out int min, out int max)
         {
-            List<int> rewards = _content.JobsForLevel(_playerData.Level).Select(j => j.reward).ToList();
+            CharacterStats s = _playerData.Stats;
+            List<int> rewards = _content.JobsForLevel(_playerData.Level)
+                .Select(j => _content.Economy.ShiftReward(_content.Economy.FindShift(j.shift), _playerData.Level, s.satiety, s.mood, s.health))
+                .ToList();
             min = rewards.Count > 0 ? rewards.Min() : 0;
             max = rewards.Count > 0 ? rewards.Max() : 0;
             return rewards.Count > 0;

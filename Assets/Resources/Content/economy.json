@@ -1,0 +1,21 @@
+{
+  "shiftTypes": [
+    { "id": "light",  "hours": 1, "baseIncome": 12, "satietyCost": 5,  "healthCost": 0,  "moodCost": 3 },
+    { "id": "normal", "hours": 3, "baseIncome": 30, "satietyCost": 15, "healthCost": 5,  "moodCost": 6 },
+    { "id": "heavy",  "hours": 9, "baseIncome": 60, "satietyCost": 40, "healthCost": 15, "moodCost": 12 }
+  ],
+  "rankIncomeMultipliers": [1, 1.25, 1.5, 1.8],
+  "incomeBaseMin": 0.2,
+  "incomeMoodBonus": 0.3,
+  "passiveDecayPerDay": { "satiety": 5, "mood": 0, "health": 2 },
+  "lowStatThreshold": 30,
+  "hungryHealthPenalty": 8,
+  "sickMoodPenalty": 8,
+  "sadSatietyPenalty": 5,
+  "maxShiftsPerDay": 2,
+  "cashbackNeedPercent": 10,
+  "cashbackWantPercent": 0,
+  "foodExpiryDays": 3,
+  "startCoins": 50,
+  "startStats": { "satiety": 30, "mood": 70, "health": 30 }
+}

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Skuf
+  m_Controller: {fileID: 9100000, guid: 5744c522eaf985c4bb77c661768c5bf7, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: be81472f74271d542bf46d5ac00e3f1e, type: 2}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: 0e86e9450e1af2847ab6011f8eea71e3, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: b0b4fcbfc4e9b03458cae23915fb6704, type: 2}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: 33a9373e74912a34190349c9da0fbf67, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: c455504d5a9b57240a96caffb4617355, type: 2}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: 74219e9c05e50534893736196686eb84, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: be5d7fa8f3b9f824b9083e4fc8c96fb4, type: 2}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: bc0570b695e75d64c8f123f177c43066, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 2e0631942427ea648a95c449b2000dc7, type: 2}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: 72ed229d6cd963647886b4d2c471d9a4, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 513f60fcfc22ace4db79e14c5a29b7de, type: 2}
+    m_OverrideClip: {fileID: -7674788299997899759, guid: 72d3449f08021b0429da8a2857e4739f, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: c2055a67731bf2f4aac2480fc8a6f668, type: 2}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: 3e2a12ef72c428040900fcfcb419da78, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: c8ba480a64a87c94f8a6db233df77ba0, type: 2}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: 5d150a3953a5b0848ae2ae8e8aa1f223, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 61d376f5115d3994b928904877c6a64f, type: 2}
+    m_OverrideClip: {fileID: 1827226128182048838, guid: 5d150a3953a5b0848ae2ae8e8aa1f223, type: 3}
