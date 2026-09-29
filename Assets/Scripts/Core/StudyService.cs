@@ -68,12 +68,10 @@ namespace Core
         /// <summary>The rank's job income multiplier (economy.json).</summary>
         public float IncomeMultiplier(int level) => _content.Economy.RankMultiplier(level);
 
-        /// <summary>"Младший (Молодой), доход ×1.25" — one line for the study screen and the promotion message.</summary>
+        /// <summary>"Младший сотрудник, доход ×1.25" — one line for the study screen and the promotion message.</summary>
         public string RankSummary(int level)
         {
-            string stage = PetStage(level);
-            string title = string.IsNullOrEmpty(stage) ? CareerTitle(level) : $"{CareerTitle(level)} ({stage})";
-            return $"{title}, доход ×{IncomeMultiplier(level):0.##}";
+            return $"{CareerTitle(level)}, доход ×{IncomeMultiplier(level):0.##}";
         }
 
         public List<StudyTaskDefinition> TasksOf(StudyThemeDefinition theme) => _content.StudyTasksOf(theme.id).ToList();
@@ -218,10 +216,7 @@ namespace Core
             {
                 _playerData.SetLevel(theme.rewardLevel);
                 result.Promoted = true;
-                string stage = PetStage(theme.rewardLevel);
-                result.NewCareerTitle = string.IsNullOrEmpty(stage)
-                    ? CareerTitle(theme.rewardLevel)
-                    : $"{CareerTitle(theme.rewardLevel)} ({stage})";
+                result.NewCareerTitle = CareerTitle(theme.rewardLevel);
             }
 
             return result;

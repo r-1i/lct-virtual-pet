@@ -73,13 +73,15 @@ namespace Care
         [Tooltip("Root of the progress panel (phase + bar + %). SetActive'd on zone enter/leave.")]
         [SerializeField] private GameObject hudRoot;
         [SerializeField] private TMP_Text phaseLabel;
-        [Tooltip("Image Type = Filled. fillAmount = progress of the current phase.")]
+        [Tooltip("Bar fill: Filled (fillAmount) or Sliced inside its track (width grows) — see UI.ProgressFill.")]
         [SerializeField] private Image progressFill;
         [Tooltip("Optional \"42%\" label.")]
         [SerializeField] private TMP_Text progressLabel;
         [SerializeField] private string applyingText = "Намыливаем";
         [SerializeField] private string clearingText = "Смываем пену";
         [SerializeField] private string doneText = "Чистенький!";
+        [Tooltip("Hidden while the player is in the shower (e.g. the Bathroom window's ToHome button), shown again on leaving.")]
+        [SerializeField] private GameObject[] hideInShower = new GameObject[0];
 
         [Header("Sounds")]
         [Tooltip("Loop, Play On Awake off. Plays while the sponge is on the character.")]
@@ -414,6 +416,14 @@ namespace Care
             {
                 hudRoot.SetActive(visible);
             }
+
+            foreach (GameObject go in hideInShower)
+            {
+                if (go != null && go.activeSelf == visible)
+                {
+                    go.SetActive(!visible);
+                }
+            }
         }
 
         /// <summary>Lathering: bubbles / target. Rinsing: how much of the foam is gone. Each phase goes 0 → 100%.</summary>
@@ -440,7 +450,7 @@ namespace Care
             progress = Mathf.Clamp01(progress);
             if (progressFill != null)
             {
-                progressFill.fillAmount = progress;
+                UI.ProgressFill.Set(progressFill, progress);
             }
 
             if (progressLabel != null)

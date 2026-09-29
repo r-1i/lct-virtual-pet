@@ -16,9 +16,17 @@ namespace Feeding
         [SerializeField] private Animator animator;
         [SerializeField] private string eatTrigger = "Eat";
         [SerializeField] private float eatActionDuration = 1.5f;
+        [Tooltip("Played on every bite (Play On Awake off). Optional.")]
+        [SerializeField] private AudioSource eatSound;
 
         public void PlayEat()
         {
+            if (eatSound != null)
+            {
+                eatSound.Stop();
+                eatSound.Play();
+            }
+
             if (characterMotor != null)
             {
                 characterMotor.PlayAction(eatTrigger, eatActionDuration);

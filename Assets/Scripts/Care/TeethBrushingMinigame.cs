@@ -31,7 +31,7 @@ namespace Care
         [SerializeField] private Image dirtyTeeth;
         [Tooltip("Toothbrush sprite, follows the finger while touching. Turn its Raycast Target off.")]
         [SerializeField] private RectTransform toothbrush;
-        [Tooltip("Image Type = Filled. fillAmount = progress.")]
+        [Tooltip("Bar fill: Filled (fillAmount) or Sliced inside its track (width grows) — see UI.ProgressFill.")]
         [SerializeField] private Image progressFill;
         [Tooltip("Optional \"42%\" label.")]
         [SerializeField] private TMP_Text progressLabel;
@@ -191,7 +191,7 @@ namespace Care
             color.a = 1f - _progress;
             dirtyTeeth.color = color;
 
-            progressFill.fillAmount = _progress;
+            UI.ProgressFill.Set(progressFill, _progress);
 
             if (progressLabel != null)
             {
